@@ -1,0 +1,28 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.ruff_cache/
+
+# CDK
+infra/
+ops/
+
+# Git
+.git/
+.gitmodules
+
+# Core git internals (submodule files are needed, but not .git metadata)
+core/.git/
+
+# Dev
+.env
+.env.local
+chainlit.md
+*.md
+
+# Docker
+Dockerfile
+.dockerignore
