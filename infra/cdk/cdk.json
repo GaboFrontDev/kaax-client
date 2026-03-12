@@ -1,0 +1,8 @@
+{
+  "app": "PYTHONPATH=../../core/infra/cdk python ../../core/infra/cdk/app.py",
+  "context": {
+    "config": "config/environments.json",
+    "env": "dev",
+    "agent": "default"
+  }
+}

@@ -23,8 +23,7 @@ SESSION_ID ?=
 	health assist webhook-verify \
 	test lint fmt \
 	docker-up docker-down docker-logs docker-up-redis docker-test-postgres docker-test-redis \
-	cdk-bootstrap cdk-init-env cdk-deploy cdk-diff cdk-destroy cdk-cancel cdk-sync-secrets awsctl \
-	cdk-dns-config \
+	cdk-bootstrap cdk-init-env cdk-deploy cdk-diff cdk-destroy cdk-sync-secrets \
 	session-clear session-clear-all
 
 help:
@@ -134,7 +133,7 @@ cdk-bootstrap:
 	./ops/bootstrap.sh
 
 cdk-init-env:
-	./ops/env-create.sh $(ENV) $(AGENT) $(DOMAIN)
+	ENV=$(ENV) AGENT=$(AGENT) DOMAIN=$(DOMAIN) ./core/ops/env-create.sh $(ENV) $(AGENT) $(DOMAIN)
 
 cdk-deploy:
 	./ops/deploy.sh $(ENV) $(AGENT)
@@ -145,23 +144,12 @@ cdk-diff:
 cdk-destroy:
 	./ops/destroy.sh $(ENV) $(AGENT)
 
-cdk-cancel:
-	./ops/awsctl.sh cancel $(ENV) $(AGENT)
-
-cdk-dns-config:
-	./ops/awsctl.sh dns-config $(ENV) $(AGENT) $(DOMAIN)
-
 cdk-logs:
-	@LOG_GROUP=$$(aws logs describe-log-groups \
+	@SERVICE=$$(python3 -c "import json; d=json.load(open('infra/cdk/config/environments.json')); print(d.get('$(ENV)',{}).get('agents',{}).get('$(AGENT)',{}).get('service_name','$(ENV)-$(AGENT)'))"); \
+	LOG_GROUP=$$(aws logs describe-log-groups \
 		--region us-east-1 \
-		--query "logGroups[?contains(logGroupName,'kaax-$(ENV)')].logGroupName | [0]" \
+		--query "logGroups[?contains(logGroupName,'$$SERVICE')].logGroupName | [0]" \
 		--output text 2>/dev/null); \
-	if [ -z "$$LOG_GROUP" ] || [ "$$LOG_GROUP" = "None" ]; then \
-		LOG_GROUP=$$(aws logs describe-log-groups \
-			--region us-east-1 \
-			--query "logGroups[?contains(logGroupName,'Kaax')].logGroupName | [0]" \
-			--output text); \
-	fi; \
 	echo "Log group: $$LOG_GROUP"; \
 	aws logs tail "$$LOG_GROUP" --follow --region us-east-1 --format short
 
@@ -171,9 +159,6 @@ cdk-sync-secrets:
 	if [ -f ./.env.local ]; then . ./.env.local; fi; \
 	set +a; \
 	./ops/secrets-sync.sh $(CDK_SECRET_NAME)
-
-awsctl:
-	./ops/awsctl.sh $(AWSCTL_ARGS)
 
 session-clear:
 	./ops/session-clear.sh "$(SESSION_ID)"
