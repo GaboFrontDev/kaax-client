@@ -32,3 +32,4 @@ htmlcov/
 nosetests.xml
 coverage.xml
 *.cover
+infra/cdk/cdk.out/
