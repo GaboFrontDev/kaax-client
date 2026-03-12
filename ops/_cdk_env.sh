@@ -31,5 +31,5 @@ _cdk_run() {
     -c env="${ENV_NAME:-dev}" \
     -c agent="${AGENT_NAME:-default}" \
     -c dockerfile_dir="$CLIENT_ROOT" \
-    "${extra[@]}"
+    ${extra[@]+"${extra[@]}"}
 }
