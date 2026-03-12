@@ -5,6 +5,7 @@
     "agents": {
       "default": {
         "service_name": "kaax-dev-default",
+        "cfn_stack_name": "Kaax-dev-default",
         "cpu": 512,
         "memory_mib": 1024,
         "cpu_architecture": "X86_64",
@@ -79,6 +80,7 @@
     "agents": {
       "sales": {
         "service_name": "kaax-prod-sales",
+        "cfn_stack_name": "Kaax-prod-sales",
         "cpu": 1024,
         "memory_mib": 2048,
         "cpu_architecture": "X86_64",
