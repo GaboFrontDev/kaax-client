@@ -2,6 +2,7 @@ SERVER_PORT ?= 8200
 HOST ?= 0.0.0.0
 API_BASE_URL ?= http://127.0.0.1:$(SERVER_PORT)
 API_TOKEN ?= dev-token
+PROD_API_URL ?= https://api.kaax.ai
 
 CHAINLIT_PORT ?= 8300
 CHAINLIT_API_URL ?= $(API_BASE_URL)
@@ -81,6 +82,11 @@ assist:
 
 webhook-verify:
 	curl -sS "$(WHATSAPP_WEBHOOK_URL)?hub.mode=subscribe&hub.verify_token=$(WHATSAPP_VERIFY_TOKEN)&hub.challenge=ok"
+
+digest:
+	curl -sS -X POST "$(PROD_API_URL)/internal/digest/trigger" \
+		-H "Authorization: Bearer $(API_TOKEN)" \
+		-H "Content-Type: application/json"
 
 test:
 	uv run --group dev pytest
