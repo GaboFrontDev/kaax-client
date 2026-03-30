@@ -18,6 +18,8 @@
         "public_load_balancer": true,
         "enable_https": true,
         "redirect_http": true,
+        "vpc_id": "vpc-0eefc48b83edef053",
+        "assign_public_ip": true,
         "certificate_arn": "arn:aws:acm:us-east-1:301782007691:certificate/508c93aa-3a1c-4d3e-b002-97e6d17633d2",
         "public_base_url": "https://api.kaax.ai",
         "environment": {
