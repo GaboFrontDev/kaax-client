@@ -56,7 +56,9 @@
           "MODEL_ROUTER_FALLBACK": "global.anthropic.claude-sonnet-4-6",
           "MODEL_ROUTER_COMPLEXITY_CHARS": "300",
           "MODEL_MAX_OUTPUT_TOKENS": "320",
-          "FOLLOW_UP_MESSAGE": "Hola{name}! Solo quería saber si tienes alguna duda sobre Kaax AI. Estoy aquí para ayudarte cuando quieras."
+          "FOLLOW_UP_MESSAGE": "Hola{name}! Solo quería saber si tienes alguna duda sobre Kaax AI. Estoy aquí para ayudarte cuando quieras.",
+          "DIGEST_INTERVAL_HOURS": "24",
+          "DIGEST_LOOKBACK_HOURS": "24"
         },
         "secret_name": "kaax/dev/default",
         "secret_keys": [
