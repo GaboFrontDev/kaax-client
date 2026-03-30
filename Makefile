@@ -83,8 +83,10 @@ assist:
 webhook-verify:
 	curl -sS "$(WHATSAPP_WEBHOOK_URL)?hub.mode=subscribe&hub.verify_token=$(WHATSAPP_VERIFY_TOKEN)&hub.challenge=ok"
 
+DIGEST_LOOKBACK_HOURS ?= 720
+
 digest:
-	curl -sS -X POST "$(PROD_API_URL)/internal/digest/trigger" \
+	curl -sS -X POST "$(PROD_API_URL)/internal/digest/trigger?lookback_hours=$(DIGEST_LOOKBACK_HOURS)" \
 		-H "Authorization: Bearer $(API_TOKEN)" \
 		-H "Content-Type: application/json"
 
