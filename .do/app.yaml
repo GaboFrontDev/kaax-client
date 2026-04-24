@@ -1,0 +1,127 @@
+name: kaax-client
+region: nyc
+
+services:
+- name: api
+  image:
+    registry_type: DOCR
+    registry: lw-api
+    repository: kaax-client
+    tag: latest
+  http_port: 8200
+  instance_count: 1
+  instance_size_slug: basic-xxs
+  health_check:
+    http_path: /health
+  envs:
+  # Agent
+  - key: AGENT_RUNTIME_BACKEND
+    value: langgraph_mvp
+  - key: CHECKPOINT_BACKEND
+    value: postgres
+  - key: MULTI_AGENT_ENABLED
+    value: "true"
+  - key: DEFAULT_PROMPT_NAME
+    value: agent
+  - key: LOG_LEVEL
+    value: INFO
+  - key: LOG_FORMAT
+    value: json
+  # Model router
+  - key: ENABLE_MODEL_ROUTER
+    value: "true"
+  - key: ENABLE_PROMPT_COMPACT
+    value: "true"
+  - key: ENABLE_USAGE_METRICS
+    value: "true"
+  - key: ENABLE_HISTORY_COMPRESSION
+    value: "false"
+  - key: MODEL_ROUTER_DEFAULT
+    value: us.anthropic.claude-haiku-4-5-20251001-v1:0
+  - key: MODEL_ROUTER_FALLBACK
+    value: global.anthropic.claude-sonnet-4-6
+  - key: MODEL_ROUTER_COMPLEXITY_CHARS
+    value: "300"
+  - key: MODEL_MAX_OUTPUT_TOKENS
+    value: "320"
+  # WhatsApp
+  - key: WHATSAPP_PROVIDER
+    value: meta
+  - key: WHATSAPP_META_PROMPT_NAME
+    value: agent
+  - key: WHATSAPP_META_API_VERSION
+    value: v21.0
+  - key: WHATSAPP_NOTIFY_TO
+    value: "5213325364780"
+  - key: FOLLOW_UP_MESSAGE
+    value: "Hola{name}! Solo quería saber si tienes alguna duda sobre Kaax AI. Estoy aquí para ayudarte cuando quieras."
+  # WhatsApp Calling
+  - key: WHATSAPP_CALLS_PROMPT_NAME
+    value: voice_agent
+  - key: WHATSAPP_CALLS_MODEL_NAME
+    value: us.anthropic.claude-haiku-4-5-20251001-v1:0
+  - key: WHATSAPP_CALLS_INCLUDE_TTS_PAYLOAD
+    value: "false"
+  # Voice / Twilio
+  - key: VOICE_PROVIDER
+    value: twilio
+  - key: TWILIO_VOICE_PROMPT_NAME
+    value: voice_agent
+  - key: TWILIO_VOICE_MODEL_NAME
+    value: us.anthropic.claude-haiku-4-5-20251001-v1:0
+  - key: TWILIO_VOICE_HANDOFF_NUMBER
+    value: "+5213325364780"
+  - key: TWILIO_VOICE_GREETING
+    value: "Hola, gracias por llamar a Kaax AI. ¿En qué puedo ayudarte hoy?"
+  - key: TWILIO_VOICE_BASE_URL
+    value: https://api.kaax.ai
+  # Deepgram
+  - key: DEEPGRAM_TTS_MODEL
+    value: aura-2-celeste-es
+  - key: DEEPGRAM_STT_MODEL
+    value: nova-3
+  - key: DEEPGRAM_STT_LANGUAGE
+    value: es
+  # Brand
+  - key: BRAND_NAME
+    value: "Kaax AI"
+  # Admin
+  - key: ADMIN_JWT_EXPIRE_HOURS
+    value: "8"
+  # Secrets
+  - key: API_TOKENS
+    type: SECRET
+  - key: DATABASE_URL
+    type: SECRET
+  - key: AWS_ACCESS_KEY_ID
+    type: SECRET
+  - key: AWS_SECRET_ACCESS_KEY
+    type: SECRET
+  - key: AWS_REGION
+    type: SECRET
+  - key: BEDROCK_MODEL
+    type: SECRET
+  - key: WHATSAPP_META_VERIFY_TOKEN
+    type: SECRET
+  - key: WHATSAPP_META_APP_SECRET
+    type: SECRET
+  - key: WHATSAPP_META_ACCESS_TOKEN
+    type: SECRET
+  - key: WHATSAPP_META_PHONE_NUMBER_ID
+    type: SECRET
+  - key: WHATSAPP_CALLS_VERIFY_TOKEN
+    type: SECRET
+  - key: WHATSAPP_CALLS_APP_SECRET
+    type: SECRET
+  - key: TWILIO_ACCOUNT_SID
+    type: SECRET
+  - key: TWILIO_VOICE_AUTH_TOKEN
+    type: SECRET
+  - key: DEEPGRAM_KEY
+    type: SECRET
+  - key: OPENAI_API_KEY
+    type: SECRET
+  - key: ADMIN_PHONES
+    type: SECRET
+  - key: ADMIN_JWT_SECRET
+    type: SECRET
